@@ -12,6 +12,16 @@ function sign(payload) {
   });
 }
 
+function userIdfromToken(req) {
+  return new Promise((resolve, reject) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.decode(token, { complete: true });
+    if (!decoded.payload.id) return reject();
+    return resolve(decoded.payload.id);
+  });
+}
+
 module.exports = {
   sign,
+  userIdfromToken,
 };

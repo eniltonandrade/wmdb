@@ -10,10 +10,14 @@
 
 module.exports = {
   development: {
-    username: 'admin',
-    password: 'password',
-    database: 'wmdb_db',
-    host: 'localhost',
+    // username: 'admin',
+    // password: 'password',
+    // database: 'wmdb_db',
+    // host: 'localhost',
+    username: 'IDumiIUHT2',
+    password: 'OnU6HITsA6',
+    database: 'IDumiIUHT2',
+    host: 'remotemysql.com',
     dialect: 'mysql',
     port: '3306',
     timezone: 'America/Sao_Paulo',

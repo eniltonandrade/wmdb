@@ -1,0 +1,7 @@
+{
+  "name": "WMDB",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

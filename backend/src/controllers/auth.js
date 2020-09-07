@@ -47,10 +47,11 @@ const login = async (req, res) => {
 
     return res.json({
       user: payload,
+      expiresIn: 950400,
       token,
     });
   } catch (err) {
-    return res.status(401).json({ message: 'Not Authorized' });
+    return res.status(401).json({ message: err });
   }
 };
 

@@ -1,0 +1,53 @@
+<ion-content class="ion-padding">
+  <div class="container">
+    <div class="welcome">
+      <img src="../../../assets/logo.png" alt="" srcset="">
+    </div>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <div class="ion-text-center">
+              <h3>{{ isLogin ? 'Entrar' : 'Registrar' }}</h3>
+            </div>
+            <div class="ion-padding">
+              <ion-item>
+                <ion-input
+                  name="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  ngModel
+                  required
+                  #email="ngModel"
+                ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  ngModel
+                  #password="ngModel"
+                  required
+                ></ion-input>
+              </ion-item>
+            </div>
+            <div class="ion-padding">
+              <ion-button size="large" type="submit" [disabled]="f.invalid" expand="block"
+                >{{ isLogin ? 'Entrar' : 'Registrar' }}</ion-button
+              >
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <div>
+            <ion-button type="button" color="primary" fill="clear" expand="block" (click)="onSwitchMode()"
+              >{{ isLogin ? 'Registrar' : 'Entrar' }}
+            </ion-button>
+          </div>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+</ion-content>

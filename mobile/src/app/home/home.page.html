@@ -1,0 +1,64 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      <img class="logo" src="../../assets/logo-sm.svg" alt="">
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-padding top-numbers">
+    <ul>
+      <li class="bigger"><span class="desc">Total Assistidos</span><span class="total">685</span></li>
+      <li><span class="desc">Esse Mês</span><span class="total">0</span></li>
+      <li><span class="desc">Esse Ano</span><span class="total">29</span></li>
+    </ul>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Tempo Assistindo a Filmes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="time-watched-gauges">
+      <div class="gauge">
+        <ngx-gauge [type]="gaugeType" [value]="watchedMonths" [max]="monthsGaugeMax" [size]="90"
+          [foregroundColor]="gaugeColor">
+        </ngx-gauge>
+        <div class="gauge-label">{{ monthsGaugeLabel }}</div>
+      </div>
+      <div class="gauge">
+        <ngx-gauge [type]="gaugeType" [value]="watchedDays" [max]="daysGaugeMax" [size]="90"
+          [foregroundColor]="gaugeColor">
+        </ngx-gauge>
+        <div class="gauge-label">{{ daysGaugeLabel }}</div>
+      </div>
+      <div class="gauge">
+        <ngx-gauge [type]="gaugeType" [value]="watchedHours" [max]="hoursGaugeMax" [size]="90"
+          [foregroundColor]="gaugeColor">
+        </ngx-gauge>
+        <div class="gauge-label">{{ hoursGaugeLabel }}</div>
+      </div>
+      <div class="gauge">
+        <ngx-gauge [type]="gaugeType" [value]="watchedMinutes" [max]="minutesGaugeMax" [size]="90"
+          [foregroundColor]="gaugeColor">
+        </ngx-gauge>
+        <div class="gauge-label">{{ minutesGaugeLabel }}</div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="section ion-padding">
+    <div class="header ion-justify-content-between">
+      <div class="title">Assistidos Recentemente</div>
+      <a [routerLink]="['/routePath']" routerLinkActive="router-link-active" >Ver Todos</a>
+    </div>
+    <ion-slides pager="true" [options]="slideOpts">
+      <ion-slide *ngFor="let movie of recentlyWatchedMovies" class="ion-wrap ion-justify-content-start">
+        <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
+        <ion-label class="slide-text">{{ movie?.title }}</ion-label>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+
+</ion-content>

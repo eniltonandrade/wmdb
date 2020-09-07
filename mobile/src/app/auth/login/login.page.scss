@@ -1,0 +1,24 @@
+ion-item{
+    --background: #1a222d;
+    --color: #fff;
+    margin-bottom: 23px;
+}
+
+.welcome{
+    img{
+        width: 50vw;
+    }
+}
+
+.container {
+    display: flex;
+    min-width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+form{
+    width: 100%;
+}
