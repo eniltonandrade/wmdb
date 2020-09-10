@@ -10,6 +10,8 @@ import { NgxGaugeModule } from 'ngx-gauge';
 
 import { HomePage } from './home.page';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +19,7 @@ import { HomePage } from './home.page';
     IonicModule,
     HomePageRoutingModule,
     NgxGaugeModule,
+    ChartsModule
   ],
   declarations: [HomePage]
 })

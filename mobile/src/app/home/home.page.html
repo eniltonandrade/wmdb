@@ -9,9 +9,9 @@
 <ion-content>
   <ion-card class="ion-padding top-numbers">
     <ul>
-      <li class="bigger"><span class="desc">Total Assistidos</span><span class="total">685</span></li>
-      <li><span class="desc">Esse Mês</span><span class="total">0</span></li>
-      <li><span class="desc">Esse Ano</span><span class="total">29</span></li>
+      <li class="bigger"><span class="desc">Total Assistidos</span><span class="total">{{ movieTotals?.total }}</span></li>
+      <li><span class="desc">Esse Mês</span><span class="total">{{ movieTotals?.totalMonth }}</span></li>
+      <li><span class="desc">Esse Ano</span><span class="total">{{ movieTotals?.totalYear }}</span></li>
     </ul>
   </ion-card>
 
@@ -47,18 +47,32 @@
     </ion-card-content>
   </ion-card>
 
-  <div class="section ion-padding">
+  <div class="section">
     <div class="header ion-justify-content-between">
       <div class="title">Assistidos Recentemente</div>
-      <a [routerLink]="['/routePath']" routerLinkActive="router-link-active" >Ver Todos</a>
+      <a [routerLink]="['/routePath']" routerLinkActive="router-link-active">Ver Todos</a>
     </div>
     <ion-slides pager="true" [options]="slideOpts">
       <ion-slide *ngFor="let movie of recentlyWatchedMovies" class="ion-wrap ion-justify-content-start">
-        <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
-        <ion-label class="slide-text">{{ movie?.title }}</ion-label>
+        <div class="movie">
+          <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
+          <div class="movie-info">
+            <div class="movie-title">{{ movie?.title }}</div>
+            <span>{{movie?.vote_average}}</span>
+          </div>
+        </div>
       </ion-slide>
     </ion-slides>
   </div>
+
+  <div class="section ion-padding">
+    <div class="header ion-justify-content-between">
+      <div class="title">Filmes por Dia da Semana</div>
+    </div>
+    <canvas baseChart [datasets]="dayOfWeekData" [chartType]="dayOfWeekType" [labels]="dayOfWeekLabel"
+      [options]="dayOfWeekChartOptions"> </canvas>
+  </div>
+
 
 
 </ion-content>

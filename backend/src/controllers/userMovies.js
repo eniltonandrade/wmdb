@@ -111,6 +111,60 @@ const remove = async (req, res) => {
   }
 };
 
+const getTotalMovies = async (req, res) => {
+  try {
+    const userId = await jwt.userIdfromToken(req);
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    const [total, totalMonth, totalYear] = await Promise.all([
+      Movie.count({
+        includeIgnoreAttributes: false,
+        include: [{ model: User, where: { id: userId }, attributes: [] }],
+      }),
+      Movie.count({
+        includeIgnoreAttributes: false,
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+            through: {
+              where: sequelize.and(
+                sequelize.where(sequelize.fn('YEAR', sequelize.col('watchedAt')), year),
+                sequelize.where(sequelize.fn('MONTH', sequelize.col('watchedAt')), month),
+              ),
+            },
+            attributes: [],
+          },
+        ],
+      }),
+      Movie.count({
+        includeIgnoreAttributes: false,
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+            through: {
+              where: sequelize.where(
+                sequelize.fn('YEAR', sequelize.col('watchedAt')),
+                year,
+              ),
+            },
+            attributes: [],
+          },
+        ],
+      }),
+    ]);
+
+    return res.status(200).json({ total, totalMonth, totalYear });
+  } catch (error) {
+    return res.status(500).json({
+      message: error,
+    });
+  }
+};
+
 const getTimeWatched = async (req, res) => {
   const userId = await jwt.userIdfromToken(req);
   try {
@@ -124,7 +178,7 @@ const getTimeWatched = async (req, res) => {
     const hours = Math.floor(((totalRunTime % 43800) % 1440) / 60);
     const minutes = Math.floor(totalRunTime % 60);
 
-    res.status(200).json({
+    return res.status(200).json({
       months,
       days,
       hours,
@@ -171,4 +225,5 @@ module.exports = {
   remove,
   getTimeWatched,
   getCountByDayOfWeek,
+  getTotalMovies,
 };

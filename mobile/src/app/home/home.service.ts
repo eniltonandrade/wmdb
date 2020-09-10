@@ -18,8 +18,20 @@ export class HomeService {
     );
   }
 
+  getTotalMovies(){
+    return this.http.get<any>(`${this.API_URL}users/movies/stats/totalMovies`).pipe(
+      shareReplay()
+    );
+  }
+
   getTotalTimeWatched(){
     return this.http.get<any>(`${this.API_URL}users/movies/stats/totalTimeWatched`).pipe(
+      shareReplay()
+    );
+  }
+
+  getMovieCountByDayOfWeek(){
+    return this.http.get<any>(`${this.API_URL}users/movies/stats/countByDayOfWeek`).pipe(
       shareReplay()
     );
   }
