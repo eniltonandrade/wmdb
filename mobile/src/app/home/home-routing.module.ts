@@ -6,12 +6,15 @@ import { HomePage } from './home.page';
 const routes: Routes = [
   {
     path: '',
-    component: HomePage
+    component: HomePage,
+  },
+  {
+    path: 'movie-list',
+    loadChildren: () => import('../pages/movie-list/movie-list.module').then(m => m.MovieListPageModule),
   }
-];
-
+]
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class HomePageRoutingModule {}
+      imports: [RouterModule.forChild(routes)],
+      exports: [RouterModule],
+    })
+export class HomePageRoutingModule { }

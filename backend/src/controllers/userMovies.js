@@ -1,7 +1,7 @@
 const sequelize = require('sequelize');
 const jwt = require('../libs/jwt');
 const {
-  Movie, Genre, Person, Company, User,
+  Movie, Genre, Person, Company, User, UserMovies,
 } = require('../models');
 
 const associate = async (req, res) => {
@@ -67,13 +67,29 @@ const listAll = async (req, res) => {
   const limit = req.query.limit || 10;
   const offset = req.query.offset || 0;
   try {
-    const user = await User.findOne({ where: { id: userId } });
-    const movies = await user.getMovies({
-      limit: +limit,
+    const result = await Movie.findAndCountAll({
+      include: [{ model: User, where: { id: userId } }],
+      subQuery: false,
+      order: [[User, UserMovies, 'watchedAt', 'DESC']],
       offset: +offset,
-      order: [[sequelize.col('UserMovies.watchedAt'), 'DESC']],
+      limit: +limit,
+
     });
-    return res.status(200).json(movies);
+
+    const movies = result.rows.map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      imdbId: movie.imdbId,
+      tmdbId: movie.tmdbId,
+      poster_path: movie.poster_path,
+      backdrop_path: movie.backdrop_path,
+      release_date: movie.release_date,
+      vote_average: movie.vote_average,
+      runtime: movie.runtime,
+      watchedAt: movie.Users[0].UserMovies.watchedAt,
+    }));
+
+    return res.status(200).json({ total: result.count, data: movies });
   } catch (error) {
     return res.status(500).json(error);
   }

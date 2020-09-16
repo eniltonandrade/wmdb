@@ -11,7 +11,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { HomePage } from './home.page';
 
 import { ChartsModule } from 'ng2-charts';
-
+import { MovieListPageModule } from '../pages/movie-list/movie-list.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,7 +19,8 @@ import { ChartsModule } from 'ng2-charts';
     IonicModule,
     HomePageRoutingModule,
     NgxGaugeModule,
-    ChartsModule
+    ChartsModule,
+    MovieListPageModule
   ],
   declarations: [HomePage]
 })

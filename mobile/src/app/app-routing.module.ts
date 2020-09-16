@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
     canLoad: [AuthGuard],
   },
+  {
+    path: 'movie-list',
+    loadChildren: () => import('./pages/movie-list/movie-list.module').then( m => m.MovieListPageModule)
+  },
 ];
 @NgModule({
   imports: [
