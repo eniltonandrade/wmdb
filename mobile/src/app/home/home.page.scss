@@ -1,79 +1,74 @@
-ion-title {
-    text-align: center;
-}
-
 .logo {
     width: 35px;
 }
 
-.top-numbers{
-    
-    ul{
+.top-numbers {
+    ul {
         list-style: none;
-        margin:0;
+        margin: 0;
         padding: 0;
 
-        li{
+        li {
             display: flex;
-            justify-content: space-between;;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
             font-size: 0.9rem;
 
-            .total{
+            .total {
                 font-weight: bold;
                 font-weight: 700;
             }
         }
 
-        li.bigger{
+        li.bigger {
             font-size: 1rem;
             color: #fff;
         }
     }
 }
 
-ion-card{
+ion-card {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 ion-card-title {
     font-size: 1rem;
-    margin:0.25rem 0;
+    margin: 0.25rem 0;
 }
 
-ion-card-content{
+ion-card-content {
     color: #fff;
 }
 
-.section{
+.section {
     color: #fff;
 }
 
-ion-slides{
+ion-slides {
     padding-left: 1rem;
 }
 
-ion-slide{
-    .movie{
+ion-slide {
+    .movie {
         background-color: #11141e;
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
+            rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
         min-width: 100%;
         margin-bottom: 6px;
     }
-    
 
-    ion-img{
+    ion-img {
         min-width: 100%;
     }
 
-    ion-img::part(image){
+    ion-img::part(image) {
         min-width: 100%;
         object-fit: cover;
     }
 
-    .movie-info{
+    .movie-info {
         color: #eee;
         display: flex;
         align-items: center;
@@ -83,7 +78,7 @@ ion-slide{
         min-width: 100%;
     }
 
-    .movie-title{
+    .movie-title {
         font-size: 0.8rem;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -91,7 +86,7 @@ ion-slide{
         margin-right: 0.25rem;
     }
 
-    span{
+    span {
         font-size: 0.6rem;
         background-color: var(--ion-color-primary-shade);
         color: var(--ion-color-primary-contrast);
@@ -100,12 +95,12 @@ ion-slide{
     }
 }
 
-.header{
+.header {
     display: flex;
     align-items: center;
     padding: 1rem;
 
-    a{
+    a {
         text-transform: uppercase;
         text-decoration: none;
         font-size: 0.7rem;

@@ -1,78 +1,91 @@
-<ion-header class="ion-no-border">
+<ion-header #header class="ion-no-border">
   <ion-toolbar>
     <ion-title>
       <img class="logo" src="../../assets/logo-sm.svg" alt="">
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)"  [fullscreen]="true">
 
-<ion-content>
-  <ion-card class="ion-padding top-numbers">
-    <ul>
-      <li class="bigger"><span class="desc">Total Assistidos</span><span class="total">{{ movieTotals?.total }}</span></li>
-      <li><span class="desc">Esse Mês</span><span class="total">{{ movieTotals?.totalMonth }}</span></li>
-      <li><span class="desc">Esse Ano</span><span class="total">{{ movieTotals?.totalYear }}</span></li>
-    </ul>
-  </ion-card>
+  <div *ngIf="recentlyWatchedMovies ; else loadingOrError">
+    <ion-card class="ion-padding top-numbers">
+      <ul>
+        <li class="bigger"><span class="desc">Total Assistidos</span><span class="total">{{ movieTotals?.total }}</span>
+        </li>
+        <li><span class="desc">Esse Mês</span><span class="total">{{ movieTotals?.totalMonth }}</span></li>
+        <li><span class="desc">Esse Ano</span><span class="total">{{ movieTotals?.totalYear }}</span></li>
+      </ul>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Tempo Assistindo a Filmes</ion-card-title>
-    </ion-card-header>
-    <ion-card-content class="time-watched-gauges">
-      <div class="gauge">
-        <ngx-gauge [type]="gaugeType" [value]="watchedMonths" [max]="monthsGaugeMax" [size]="90"
-          [foregroundColor]="gaugeColor">
-        </ngx-gauge>
-        <div class="gauge-label">{{ monthsGaugeLabel }}</div>
-      </div>
-      <div class="gauge">
-        <ngx-gauge [type]="gaugeType" [value]="watchedDays" [max]="daysGaugeMax" [size]="90"
-          [foregroundColor]="gaugeColor">
-        </ngx-gauge>
-        <div class="gauge-label">{{ daysGaugeLabel }}</div>
-      </div>
-      <div class="gauge">
-        <ngx-gauge [type]="gaugeType" [value]="watchedHours" [max]="hoursGaugeMax" [size]="90"
-          [foregroundColor]="gaugeColor">
-        </ngx-gauge>
-        <div class="gauge-label">{{ hoursGaugeLabel }}</div>
-      </div>
-      <div class="gauge">
-        <ngx-gauge [type]="gaugeType" [value]="watchedMinutes" [max]="minutesGaugeMax" [size]="90"
-          [foregroundColor]="gaugeColor">
-        </ngx-gauge>
-        <div class="gauge-label">{{ minutesGaugeLabel }}</div>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <div class="section">
-    <div class="header ion-justify-content-between">
-      <div class="title">Assistidos Recentemente</div>
-      <a [routerLink]="['/tabs/home/movie-list']" routerLinkActive="router-link-active">Ver Todos</a>
-    </div>
-    <ion-slides pager="true" [options]="slideOpts">
-      <ion-slide *ngFor="let movie of recentlyWatchedMovies" class="ion-wrap ion-justify-content-start">
-        <div class="movie">
-          <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
-          <div class="movie-info">
-            <div class="movie-title">{{ movie?.title }}</div>
-            <span>{{movie?.vote_average}}</span>
-          </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Tempo Assistindo a Filmes</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="time-watched-gauges">
+        <div class="gauge">
+          <ngx-gauge [type]="gaugeType" [value]="watchedMonths" [max]="monthsGaugeMax" [size]="90"
+            [foregroundColor]="gaugeColor">
+          </ngx-gauge>
+          <div class="gauge-label">{{ monthsGaugeLabel }}</div>
         </div>
-      </ion-slide>
-    </ion-slides>
-  </div>
+        <div class="gauge">
+          <ngx-gauge [type]="gaugeType" [value]="watchedDays" [max]="daysGaugeMax" [size]="90"
+            [foregroundColor]="gaugeColor">
+          </ngx-gauge>
+          <div class="gauge-label">{{ daysGaugeLabel }}</div>
+        </div>
+        <div class="gauge">
+          <ngx-gauge [type]="gaugeType" [value]="watchedHours" [max]="hoursGaugeMax" [size]="90"
+            [foregroundColor]="gaugeColor">
+          </ngx-gauge>
+          <div class="gauge-label">{{ hoursGaugeLabel }}</div>
+        </div>
+        <div class="gauge">
+          <ngx-gauge [type]="gaugeType" [value]="watchedMinutes" [max]="minutesGaugeMax" [size]="90"
+            [foregroundColor]="gaugeColor">
+          </ngx-gauge>
+          <div class="gauge-label">{{ minutesGaugeLabel }}</div>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-  <div class="section ion-padding">
-    <div class="header ion-justify-content-between">
-      <div class="title">Filmes por Dia da Semana</div>
+    <div class="section">
+      <div class="header ion-justify-content-between">
+        <div class="title">Assistidos Recentemente</div>
+        <a [routerLink]="['/tabs/home/movie-list']" routerLinkActive="router-link-active">Ver Todos</a>
+      </div>
+      <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide *ngFor="let movie of recentlyWatchedMovies" class="ion-wrap ion-justify-content-start">
+          <div class="movie">
+            <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
+            <div class="movie-info">
+              <div class="movie-title">{{ movie?.title }}</div>
+              <span>{{movie?.vote_average}}</span>
+            </div>
+          </div>
+        </ion-slide>
+      </ion-slides>
     </div>
-    <canvas baseChart [datasets]="dayOfWeekData" [chartType]="dayOfWeekType" [labels]="dayOfWeekLabel"
-      [options]="dayOfWeekChartOptions"> </canvas>
+
+    <div class="section ion-padding">
+      <div class="header ion-justify-content-between">
+        <div class="title">Filmes por Dia da Semana</div>
+      </div>
+      <canvas baseChart [datasets]="dayOfWeekData" [chartType]="dayOfWeekType" [labels]="dayOfWeekLabel"
+        [options]="dayOfWeekChartOptions"> </canvas>
+    </div>
+
   </div>
-
-
-
+  <ng-template #loadingOrError>
+    <ng-container *ngIf="error; else loading">
+      <div class="loading">
+        Alguma coisa deu errado!
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    </ng-template>
+  </ng-template>
 </ion-content>

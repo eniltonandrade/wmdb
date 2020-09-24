@@ -1,19 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { HomeService } from './home.service';
 import { environment } from 'src/environments/environment';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { IMovie } from '../models/movie';
+import { forkJoin, Observable } from 'rxjs';
+import { AnimationController, Animation, ToastController, IonHeader, AnimationDirection } from '@ionic/angular';
 
+interface IHomeData {
+  movieList: IMovie[];
+  movieTotals: {
+    total: number;
+    totalMonth: number;
+    totalYear: number;
+  };
+  totalByDayOfWeek: {
+    result: {
+      dayofweek: number;
+      total: number;
+    };
+  };
+  totalTimeWatched: {
+    months: number;
+    days: number;
+    hours: number;
+    minutes: number;
+  };
+
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
+  @ViewChild('header') header: any;
+  private headerEl: any;
+  private lastScrollTop = 0;
+  private animation: Animation;
 
-  public recentlyWatchedMovies: any[];
-
+  public data$: Observable<IHomeData>;
+  public error: boolean;
+  public recentlyWatchedMovies: IMovie[];
+  public totalByDayOfWeek: any;
   public movieTotals: any;
+  public totalTimeWatched: any;
 
   public watchedMonths: number;
   public watchedDays: number;
@@ -76,59 +107,98 @@ export class HomePage implements OnInit {
     },
   };
 
-  constructor(private homeService: HomeService) {
-    this.loadGaugeData();
-    this.loadRecentlyWatched();
-    this.loadWatchedByDayOfWeek();
-    this.loadTotalMovies();
+  constructor(
+    private homeService: HomeService,
+    private toastCtrl: ToastController,
+    private animateCtrl: AnimationController,
+    private render: Renderer2) {
   }
 
-  ngOnInit() {
+  ionViewDidEnter() {
+    this.headerEl = this.header.el;
+
+    this.loadPageData();
+
+    this.createAnimation();
+  }
+
+  loadPageData() {
+    const movieList$ = this.homeService.getMoviesList(10);
+    const totalByDayOfWeek$ = this.homeService.getMovieCountByDayOfWeek();
+    const movieTotals$ = this.homeService.getTotalMovies();
+    const totalTimeWatched$ = this.homeService.getTotalTimeWatched();
+
+    forkJoin([movieList$, totalByDayOfWeek$, movieTotals$, totalTimeWatched$]).subscribe(result => {
+      this.recentlyWatchedMovies = result[0];
+      this.totalByDayOfWeek = result[1];
+      this.movieTotals = result[2];
+      this.totalTimeWatched = result[3];
+      this.loadGaugeData();
+      this.loadWatchedByDayOfWeek();
+    }, (error) => {
+      this.presentToast(error.message);
+      this.error = true;
+    });
+
   }
 
   loadWatchedByDayOfWeek(): void {
-    this.homeService.getMovieCountByDayOfWeek().subscribe(res => {
-      const data: any = (res as any).result;
-      const labels = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
+    const data = this.totalByDayOfWeek.result;
+    const labels = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
 
-      this.dayOfWeekData[0].data = [];
-      this.dayOfWeekLabel = labels;
+    this.dayOfWeekData[0].data = [];
+    this.dayOfWeekLabel = labels;
 
-      for (const value of data) {
-        this.dayOfWeekData[0].data.push(value.total);
-      }
+    for (const value of data) {
+      this.dayOfWeekData[0].data.push(value.total);
+    }
+  }
 
-    });
-  }
-  loadTotalMovies(): void {
-    this.homeService.getTotalMovies().subscribe(res => {
-      this.movieTotals = res;
-    });
-  }
-  loadRecentlyWatched(): void {
-    this.homeService.getMoviesList(10).subscribe((res) => {
-      this.recentlyWatchedMovies = res;
-    });
-  }
 
   loadGaugeData(): void {
-    this.homeService.getTotalTimeWatched().subscribe(res => {
-      this.watchedMonths = res.months;
-      this.watchedDays = res.days;
-      this.watchedHours = res.hours;
-      this.watchedMinutes = res.minutes;
+    this.watchedMonths = this.totalTimeWatched.months;
+    this.watchedDays = this.totalTimeWatched.days;
+    this.watchedHours = this.totalTimeWatched.hours;
+    this.watchedMinutes = this.totalTimeWatched.minutes;
 
-      this.monthsGaugeLabel = this.watchedMonths > 1 ? 'Meses' : 'Mês';
-      this.daysGaugeLabel = this.watchedDays > 1 ? 'Dias' : 'Dia';
-      this.hoursGaugeLabel = this.watchedHours > 1 ? 'Horas' : 'Hora';
-      this.minutesGaugeLabel = this.watchedMinutes > 1 ? 'Minutos' : 'Minuto';
-    })
+    this.monthsGaugeLabel = this.watchedMonths > 1 ? 'Meses' : 'Mês';
+    this.daysGaugeLabel = this.watchedDays > 1 ? 'Dias' : 'Dia';
+    this.hoursGaugeLabel = this.watchedHours > 1 ? 'Horas' : 'Hora';
+    this.minutesGaugeLabel = this.watchedMinutes > 1 ? 'Minutos' : 'Minuto';
 
 
   }
 
   generateImageUrl(url: string): string {
     return `${environment.TMDB.images.base_url}${environment.TMDB.images.poster_sizes.w154}/${url}`;
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color: 'danger',
+      position: 'bottom',
+    });
+    toast.present();
+  }
+
+  createAnimation() {
+    this.animation = this.animateCtrl.create()
+      .addElement(this.headerEl)
+      .duration(300)
+      .direction('reverse')
+      .fromTo('transform', 'translateY(0)', `translateY(-${this.headerEl.clientHeight}px)`)
+  }
+
+  onScroll(event: any) {
+    const scrollTop: number = event.detail.scrollTop;
+    const direction: AnimationDirection = scrollTop > this.lastScrollTop ? 'normal' : 'reverse';
+
+    if (this.animation.getDirection() !== direction) { this.animation.direction(direction).play() }
+
+    this.lastScrollTop = scrollTop;
+
   }
 
 }

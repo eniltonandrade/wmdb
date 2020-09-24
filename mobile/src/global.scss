@@ -30,3 +30,14 @@
 body{
     font-family: 'Open Sans', sans-serif;
 }
+
+.loading {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ion-spinner{
+    --color: var(--ion-color-primary);
+  }
