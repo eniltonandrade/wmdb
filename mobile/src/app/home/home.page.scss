@@ -57,41 +57,49 @@ ion-slide {
             rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
         min-width: 100%;
         margin-bottom: 6px;
-    }
 
-    ion-img {
-        min-width: 100%;
-    }
+        ion-img {
+            min-width: 100%;
+        }
 
-    ion-img::part(image) {
-        min-width: 100%;
-        object-fit: cover;
-    }
+        ion-img::part(image) {
+            min-width: 100%;
+            object-fit: cover;
+        }
 
-    .movie-info {
-        color: #eee;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 0.5rem;
-        text-align: start;
-        min-width: 100%;
-    }
+        .movie-info {
+            color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0.5rem 0.5rem 0.5rem;
+            text-align: start;
+            min-width: 100%;
 
-    .movie-title {
-        font-size: 0.8rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin-right: 0.25rem;
-    }
+            span {
+                font-size: 0.6rem;
+                background-color: var(--ion-color-primary-shade);
+                color: var(--ion-color-primary-contrast);
+                border-radius: 3px;
+                padding: 2px 4px;
+            }
+        }
 
-    span {
-        font-size: 0.6rem;
-        background-color: var(--ion-color-primary-shade);
-        color: var(--ion-color-primary-contrast);
-        border-radius: 3px;
-        padding: 2px 4px;
+        .movie-title {
+            font-size: 0.8rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-right: 0.25rem;
+        }
+
+        p {
+            font-size: 0.7rem;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 0.5rem;
+            font-weight: normal;
+        }
     }
 }
 

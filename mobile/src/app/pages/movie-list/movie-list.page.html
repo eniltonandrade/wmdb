@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header #header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
@@ -7,20 +7,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-text class="ion-padding"><span>{{ totalMovies }}</span> Filmes</ion-text>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="4" *ngFor="let movie of movies">
-        <div class="movie">
-          <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
-          <div class="movie-info">
-            <div class="movie-title">{{ movie?.title }}</div>
-            <span>{{movie?.vote_average}}</span>            
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" [fullscreen]="true">
+  <div *ngIf="movies ; else loadingOrError">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12"><span class="top-info">{{ totalMovies }} Filmes</span></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4" *ngFor="let movie of movies">
+          <div class="movie">
+            <ion-img [src]="generateImageUrl(movie?.poster_path)" (ionError)="handleImgError($event)"></ion-img>
+            <div class="movie-info">
+              <div class="movie-title">{{ formatDate(movie?.watchedAt) }}</div>
+              <span>{{movie?.vote_average}}</span>
+            </div>
+            <p></p>
           </div>
-          <p>{{movie.watchedAt}}</p>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ng-template #loadingOrError>
+    <ng-container *ngIf="error; else loading">
+      <div class="loading">
+        Alguma coisa deu errado!
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    </ng-template>
+  </ng-template>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

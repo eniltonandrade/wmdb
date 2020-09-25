@@ -1,11 +1,13 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HomeService } from './home.service';
 import { environment } from 'src/environments/environment';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { IMovie } from '../models/movie';
 import { forkJoin, Observable } from 'rxjs';
-import { AnimationController, Animation, ToastController, IonHeader, AnimationDirection } from '@ionic/angular';
+import { formatDistanceToNow } from 'date-fns';
+import { AnimationController, Animation, ToastController, AnimationDirection } from '@ionic/angular';
+import ptBR from 'date-fns/locale/pt-BR';
 
 interface IHomeData {
   movieList: IMovie[];
@@ -110,8 +112,7 @@ export class HomePage {
   constructor(
     private homeService: HomeService,
     private toastCtrl: ToastController,
-    private animateCtrl: AnimationController,
-    private render: Renderer2) {
+    private animateCtrl: AnimationController) {
   }
 
   ionViewDidEnter() {
@@ -188,17 +189,22 @@ export class HomePage {
       .addElement(this.headerEl)
       .duration(300)
       .direction('reverse')
-      .fromTo('transform', 'translateY(0)', `translateY(-${this.headerEl.clientHeight}px)`)
+      .fromTo('transform', 'translateY(0)', `translateY(-${this.headerEl.clientHeight}px)`);
   }
 
   onScroll(event: any) {
     const scrollTop: number = event.detail.scrollTop;
     const direction: AnimationDirection = scrollTop > this.lastScrollTop ? 'normal' : 'reverse';
 
-    if (this.animation.getDirection() !== direction) { this.animation.direction(direction).play() }
+    if (this.animation.getDirection() !== direction) { this.animation.direction(direction).play(); }
 
     this.lastScrollTop = scrollTop;
 
+  }
+
+  formatDate(watchedAt: string){
+    const date = new Date(watchedAt);
+    return formatDistanceToNow(date, { addSuffix: true, locale: ptBR});
   }
 
 }

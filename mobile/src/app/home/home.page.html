@@ -59,7 +59,7 @@
           <div class="movie">
             <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
             <div class="movie-info">
-              <div class="movie-title">{{ movie?.title }}</div>
+              <div class="movie-title">{{ formatDate(movie?.watchedAt) }}</div>
               <span>{{movie?.vote_average}}</span>
             </div>
           </div>

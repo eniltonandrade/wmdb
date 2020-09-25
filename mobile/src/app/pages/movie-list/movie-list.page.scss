@@ -1,29 +1,39 @@
-.movie{
+.movie {
     background-color: #11141e;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
+        rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
     min-width: 100%;
     margin-bottom: 6px;
 
-    ion-img{
+    ion-img {
         min-width: 100%;
     }
 
-    ion-img::part(image){
+    ion-img::part(image) {
         min-width: 100%;
         object-fit: cover;
     }
 
-    .movie-info{
+    .movie-info {
         color: #eee;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem 0.5rem;
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
         text-align: start;
         min-width: 100%;
+
+        
+        span {
+            font-size: 0.6rem;
+            background-color: var(--ion-color-primary-shade);
+            color: var(--ion-color-primary-contrast);
+            border-radius: 3px;
+            padding: 2px 4px;
+        }
     }
 
-    .movie-title{
+    .movie-title {
         font-size: 0.8rem;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -31,12 +41,17 @@
         margin-right: 0.25rem;
     }
 
-    span{
-        font-size: 0.6rem;
-        background-color: var(--ion-color-primary-shade);
-        color: var(--ion-color-primary-contrast);
-        border-radius: 3px;
-        padding: 2px 4px;
+    p {
+        font-size: 0.7rem;
+        padding: 0;
+        margin: 0;
+        padding-bottom: 0.5rem;
+        font-weight: normal;
     }
+}
 
+.top-info{
+    margin: 1.5rem 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;;
 }

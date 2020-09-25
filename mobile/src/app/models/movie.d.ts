@@ -1,32 +1,32 @@
-interface IGenre {
+export interface IGenre {
     id: number;
     name: string;
 }
 
-interface IBelongsToCollection {
+export interface IBelongsToCollection {
     id: number;
     name: string;
     poster_path: string;
     backdrop_path: string;
 }
 
-interface IProductionCompany{
+export interface IProductionCompany{
     id: number;
     logo_path: string;
     name: string;
     origin_country: string;
 }
 
-interface IProductionCountries{
+export interface IProductionCountries{
     iso_3166_1: string;
     name: string;
 }
 
-interface ISpokenLanguage {
+export interface ISpokenLanguage {
     iso_639_1:string;
     name:string;
 }
-interface ICrew{
+export interface ICrew{
     credit_id: string;
     department: string;
     gender:number;
@@ -36,7 +36,7 @@ interface ICrew{
     profile_path: string;
 }
 
-interface ICast{
+export interface ICast{
     cast_id: number;
     character:string;
     credit_id:string;
@@ -47,7 +47,7 @@ interface ICast{
     profile_path: string;
 }
 
-interface ICasts{
+export interface ICasts{
     cast: ICast[];
     crew: ICrew[];
 }
