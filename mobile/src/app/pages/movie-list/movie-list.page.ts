@@ -48,7 +48,7 @@ export class MovieListPage {
     });
   }
 
-  loadMoreMovies(){
+  loadMoreMovies() {
     this.movieListService.getMoviesList(this.offset, this.limit).subscribe(res => {
       const movies = (res as any).data;
       const movieTemp = this.movies.concat(movies);
@@ -76,14 +76,25 @@ export class MovieListPage {
     return `${environment.TMDB.images.base_url}${environment.TMDB.images.poster_sizes.w154}/${url}`;
   }
 
-  handleImgError(event: any){
-    console.log(event)
+  handleImgError(event: any, i: number) {
+    const id = this.movies[i].id;
+    const tmdbId = this.movies[i].tmdbId;
+    this.movieListService.getTmdbMovieInfo(tmdbId).subscribe(res => {
+      const newPosterPath = res.poster_path;
+      const data = {
+        poster_path: newPosterPath
+      };
+      this.movieListService.updateMovieInfo(id, data).subscribe((response) => { }, (error) => {
+        this.presentToast(error.message);
+      });
+      this.movies[i].poster_path = newPosterPath;
+    });
   }
 
   formatDate(watchedAt: string) {
     if (!watchedAt) { return false; }
     const date = new Date(watchedAt);
-    return format(date, 'dd-LL-yyy', { locale: ptBR });
+    return format(date, 'dd LLL yyy', { locale: ptBR });
   }
 
   async presentToast(message: string) {

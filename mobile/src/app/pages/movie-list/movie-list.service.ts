@@ -21,4 +21,16 @@ export class MovieListService {
       shareReplay()
     );
   }
+
+  getTmdbMovieInfo(tmdbId: number) {
+    return this.http.get<IMovie>(`${this.API_URL}tmdb/movie/${tmdbId}`).pipe(
+      shareReplay()
+    );
+  }
+
+  updateMovieInfo(id: number, data: IMovie){
+    return this.http.put<IMovie>(`${this.API_URL}/movies/${id}`, data).pipe(
+      shareReplay()
+    );
+  }
 }

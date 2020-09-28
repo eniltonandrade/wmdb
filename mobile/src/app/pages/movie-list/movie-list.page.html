@@ -14,9 +14,10 @@
         <ion-col size="12"><span class="top-info">{{ totalMovies }} Filmes</span></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4" *ngFor="let movie of movies">
+        <ion-col size="4" *ngFor="let movie of movies; let i = index">
           <div class="movie">
-            <ion-img [src]="generateImageUrl(movie?.poster_path)" (ionError)="handleImgError($event)"></ion-img>
+            <ion-img *ngIf="movie.poster_path" [src]="generateImageUrl(movie?.poster_path)"
+              (ionError)="handleImgError($event, i)"></ion-img>
             <div class="movie-info">
               <div class="movie-title">{{ formatDate(movie?.watchedAt) }}</div>
               <span>{{movie?.vote_average}}</span>
@@ -40,9 +41,7 @@
     </ng-template>
   </ng-template>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Carregando...">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

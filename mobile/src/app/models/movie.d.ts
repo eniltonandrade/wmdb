@@ -53,29 +53,29 @@ export interface ICasts{
 }
 
 export interface IMovie {
-    id: number;
-    title: string;
-    imdbId: string;
-    tmdbId: number;
-    poster_path: string;
-    backdrop_path: string;
-    release_date: Date;
-    vote_average: number;
-    runtime: number;
-    watchedAt: Date;
-    belongs_to_collection: IBelongsToCollection;
-    budget: number;
-    genres: IGenre[];
-    homepage: string;
-    overview: string;
-    popularity: number;
-    production_companies: IProductionCompany[];
-    revenue: number;
-    spoken_languages:ISpokenLanguage[]
-    status: string;
-    tagline: string;
-    video:boolean;
-    vote_count:number;
-    casts: ICasts;
+    id?: number;
+    title?: string;
+    imdbId?: string;
+    tmdbId?: number;
+    poster_path?: string;
+    backdrop_path?: string;
+    release_date?: Date;
+    vote_average?: number;
+    runtime?: number;
+    watchedAt?: Date;
+    belongs_to_collection?: IBelongsToCollection;
+    budget?: number;
+    genres?: IGenre[];
+    homepage?: string;
+    overview?: string;
+    popularity?: number;
+    production_companies?: IProductionCompany[];
+    revenue?: number;
+    spoken_languages?:ISpokenLanguage[]
+    status?: string;
+    tagline?: string;
+    video?:boolean;
+    vote_count?:number;
+    casts?: ICasts;
 
 }
