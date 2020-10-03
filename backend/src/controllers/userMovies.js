@@ -103,11 +103,12 @@ const get = async (req, res) => {
     const movie = await user.getMovies({ where: { tmdbId } });
     if (movie && movie.length > 0) {
       return res.status(200).json({
+        isWatched: true,
         datetime: movie[0].UserMovies.watchedAt,
       });
     }
-    return res.status(404).json({
-      status: false,
+    return res.status(200).json({
+      isWatched: false,
     });
   } catch (err) {
     return res.status(500).json(err);
