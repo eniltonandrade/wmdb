@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border" translucent>
-  <ion-toolbar>
+  <ion-toolbar #toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/home/movie-list"></ion-back-button>
     </ion-buttons>
@@ -10,12 +10,12 @@
         <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ movie?.title }}</ion-title>
+    <ion-title  #title>{{ movie?.title }}</ion-title>
   </ion-toolbar>
   
 </ion-header>
 
-<ion-content>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <div class="header-content">
     <div class="backdrop-area">
       <div class="backdrop ion-no-padding">
