@@ -8,6 +8,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { formatDistanceToNow } from 'date-fns';
 import { AnimationController, Animation, ToastController, AnimationDirection } from '@ionic/angular';
 import ptBR from 'date-fns/locale/pt-BR';
+import { Router } from '@angular/router';
 
 interface IHomeData {
   movieList: IMovie[];
@@ -112,7 +113,8 @@ export class HomePage {
   constructor(
     private homeService: HomeService,
     private toastCtrl: ToastController,
-    private animateCtrl: AnimationController) {
+    private animateCtrl: AnimationController,
+    private router: Router) {
   }
 
   ionViewDidEnter() {
@@ -141,6 +143,10 @@ export class HomePage {
       this.error = true;
     });
 
+  }
+
+  onClickPoster(id: number) {
+    this.router.navigate(['/tabs/home/movie-details', id]);
   }
 
   loadWatchedByDayOfWeek(): void {

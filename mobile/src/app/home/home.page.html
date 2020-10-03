@@ -56,7 +56,7 @@
       </div>
       <ion-slides pager="true" [options]="slideOpts">
         <ion-slide *ngFor="let movie of recentlyWatchedMovies" class="ion-wrap ion-justify-content-start">
-          <div class="movie">
+          <div class="movie" (click)="onClickPoster(movie?.tmdbId)">
             <ion-img [src]="generateImageUrl(movie?.poster_path)"></ion-img>
             <div class="movie-info">
               <div class="movie-title">{{ formatDate(movie?.watchedAt) }}</div>

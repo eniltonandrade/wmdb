@@ -12,6 +12,7 @@ import { HomePage } from './home.page';
 
 import { ChartsModule } from 'ng2-charts';
 import { MovieListPageModule } from '../pages/movie-list/movie-list.module';
+import { MovieDetailsPageModule } from '../pages/movie-details/movie-details.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,7 +21,8 @@ import { MovieListPageModule } from '../pages/movie-list/movie-list.module';
     HomePageRoutingModule,
     NgxGaugeModule,
     ChartsModule,
-    MovieListPageModule
+    MovieListPageModule,
+    MovieDetailsPageModule
   ],
   declarations: [HomePage]
 })

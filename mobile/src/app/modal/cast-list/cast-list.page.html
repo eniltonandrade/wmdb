@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item
+    *ngFor="let cast of casts"
+    lines="none"
+    detail
+    [routerLink]="['/people', cast.id]"
+    (click)="dismiss()"
+  >
+    <ion-avatar slot="start">
+      <ion-img [src]="profilePicUrl + cast.profile_path"></ion-img>
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ cast.name }}</h2>
+      <p>{{ cast.character }}</p>
+    </ion-label>
+  </ion-item>
+</ion-content>

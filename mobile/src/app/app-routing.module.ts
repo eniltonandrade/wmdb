@@ -17,6 +17,14 @@ const routes: Routes = [
     path: 'movie-list',
     loadChildren: () => import('./pages/movie-list/movie-list.module').then( m => m.MovieListPageModule)
   },
+  {
+    path: 'movie-details',
+    loadChildren: () => import('./pages/movie-details/movie-details.module').then( m => m.MovieDetailsPageModule)
+  },
+  {
+    path: 'cast-list',
+    loadChildren: () => import('./modal/cast-list/cast-list.module').then( m => m.CastListPageModule)
+  },
 ];
 @NgModule({
   imports: [

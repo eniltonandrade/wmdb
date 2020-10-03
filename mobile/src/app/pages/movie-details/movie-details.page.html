@@ -1,0 +1,118 @@
+<ion-header class="ion-no-border" translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home/movie-list"></ion-back-button>
+    </ion-buttons>
+  
+
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ movie?.title }}</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <div class="header-content">
+    <div class="backdrop-area">
+      <div class="backdrop ion-no-padding">
+        <ion-img *ngIf="movie?.backdrop_path" [src]="generateImageUrl(movie?.backdrop_path)"></ion-img>
+      </div>
+    </div>
+    <div class="poster-details ion-padding">
+      <div class="poster">
+        <ion-img *ngIf="movie?.poster_path" [src]="posterUrl + movie?.poster_path"></ion-img>
+      </div>
+      <div class="movie-info">
+        <h1>{{ movie?.title }}</h1>
+        <span>
+          {{ movie?.release_date | date: 'yyyy' }} - {{ movie?.runtime }} minutos
+        </span>
+      </div>
+    </div>
+  </div>
+  <ion-card>
+    <ion-item class="ion-no-padding">
+      <ion-label class="ion-padding-horizontal">Sinopse</ion-label>
+    </ion-item>
+    <ion-card-content>
+      <ion-text color="dark">
+        <p>{{ movie?.overview }}</p> 
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="ion-no-padding">
+    <ion-item class="ion-no-padding">
+      <ion-label class="ion-padding-horizontal">Gêneros</ion-label>
+    </ion-item>
+    <ion-card-content>
+      <ion-badge *ngFor="let genre of movie?.genres" color="primary">{{ genre.name }}</ion-badge>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-item class="ion-no-padding">
+      <ion-label class="ion-padding-horizontal">Diretores</ion-label>
+    </ion-item>
+    <ion-card-content class="ion-no-padding">
+      <ion-item *ngFor="let director of directors" lines="none" detail [routerLink]="['/people', director.id]"
+        [queryParams]="{ role: 'directing'}">
+        <ion-avatar slot="start" *ngIf="director.profile_path">
+          <ion-img [src]="profileUrl + director.profile_path"></ion-img>
+        </ion-avatar>
+        <ion-label>{{ director.name }}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-item class="ion-no-padding">
+      <ion-label class="ion-padding-horizontal">Elenco</ion-label>
+      <ion-badge class="see-more"(click)="presentCastListModal()" color="primary" slot="end" size="small"*ngIf="movie?.casts.cast.length > 10">
+        Ver Todos
+      </ion-badge>
+    </ion-item>
+    <ion-card-content class="ion-no-padding">
+      <ion-item
+            *ngFor="let cast of movie?.casts.cast.slice(0,5)"
+            lines="none"
+            detail
+            [routerLink]="['/people', cast?.id]"
+          >
+            <ion-avatar slot="start" *ngIf="cast.profile_path">
+              <ion-img [src]="profileUrl + cast.profile_path"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ cast?.name }}</h2>
+              <p>{{ cast?.character }}</p>
+            </ion-label>
+          </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="ion-no-padding">
+    <ion-item class="ion-no-padding">
+      <ion-label class="ion-padding-horizontal">Estúdios</ion-label>
+    </ion-item>
+    <ion-card-content>
+      <ion-badge *ngFor="let company of movie?.production_companies" color="primary">{{ company.name }}</ion-badge>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="presentActionSheet()">
+      <ion-icon [name]="fabIcon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+<ion-datetime
+  (ionChange)="dateChanged($event)"
+  #startTimePicker
+  displayFormat="DD/MMM/YYYY H:mm"
+  cancelText="Cancelar"
+  doneText="Salvar"
+  [monthShortNames]="customMonthShortNames"
+  min="1994-03-14"
+  [max]="today.toISOString()"
+  [value]="today.toISOString()"
+  hidden="true"
+></ion-datetime>

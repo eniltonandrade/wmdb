@@ -15,7 +15,7 @@
       </ion-row>
       <ion-row>
         <ion-col size="4" *ngFor="let movie of movies; let i = index">
-          <div class="movie">
+          <div class="movie" (click)="onClickPoster(movie?.tmdbId)">
             <ion-img *ngIf="movie.poster_path" [src]="generateImageUrl(movie?.poster_path)"
               (ionError)="handleImgError($event, i)"></ion-img>
             <div class="movie-info">

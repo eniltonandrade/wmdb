@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { AnimationController, Animation, AnimationDirection, ToastController } from '@ionic/angular';
 import { IMovie } from 'src/app/models/movie';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
@@ -27,7 +28,8 @@ export class MovieListPage {
   constructor(
     private movieListService: MovieListService,
     private animateCtrl: AnimationController,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private router: Router) {
 
   }
 
@@ -123,6 +125,10 @@ export class MovieListPage {
 
     this.lastScrollTop = scrollTop;
 
+  }
+
+  onClickPoster(id: number) {
+    this.router.navigate(['/tabs/home/movie-details', id]);
   }
 
 }
