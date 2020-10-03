@@ -8,9 +8,8 @@ import ptBR from 'date-fns/locale/pt-BR';
 export class DateformatPipe implements PipeTransform {
 
   transform(value: Date, dateFormat: string): any {
-    console.log(value);
     const date = new Date(value);
-    format(date, dateFormat, { locale: ptBR });
+    return format(date, dateFormat, { locale: ptBR });
   }
 
 }

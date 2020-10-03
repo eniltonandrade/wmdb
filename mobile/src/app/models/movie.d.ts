@@ -55,7 +55,7 @@ export interface ICasts{
 export interface IMovie {
     id?: number;
     title?: string;
-    imdbId?: string;
+    imdb_id?: string;
     tmdbId?: number;
     poster_path?: string;
     backdrop_path?: string;

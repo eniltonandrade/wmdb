@@ -14,17 +14,21 @@ import { MovieDetailsService } from './movie-details.service';
 })
 export class MovieDetailsPage {
   private animation: Animation;
+  private titleAnimation: Animation;
 
   public movie: IMovie;
+  public imdbRatings: any;
   public error = false;
+  public isWatched = false;
   public watchedDate: Date;
   public today = new Date();
   public directors: ICrew[];
   public posterUrl = `${environment.TMDB.images.base_url}${environment.TMDB.images.poster_sizes.w154}`;
   public profileUrl = `${environment.TMDB.images.base_url}${environment.TMDB.images.profile_sizes.w45}`;
-  public isWatched = false;
-  public fabIcon = 'add-sharp';
+  public fabIcon: string;
   public customMonthShortNames: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'aug', 'set', 'out', 'nov', 'dez'];
+  public selectedTab: string;
+  
 
   private toolbarEl: any;
   private titleEl: any;
@@ -45,27 +49,38 @@ export class MovieDetailsPage {
   ionViewDidEnter() {
     this.toolbarEl = this.toolbar.el;
     this.titleEl = this.title.el;
+    this.selectedTab = 'movieDetails';
     const movieId = +this.route.snapshot.paramMap.get('id');
     this.loadData(movieId);
     this.createAnimation();
+    this.fabIcon = this.isWatched ? 'add-sharp' : 'checkmark-sharp';
+  }
+  segmentChanged(ev: any) {
+    this.selectedTab = ev.detail.value;
   }
 
   createAnimation() {
     this.animation = this.animateCtrl.create()
       .addElement(this.toolbarEl)
-      .duration(300)
+      .duration(200)
       .direction('reverse')
-      .fromTo('background', 'transparent', '#131722')
+      .fromTo('background', 'transparent', '#131722');
+
+    this.titleAnimation = this.animateCtrl.create()
       .addElement(this.titleEl)
       .duration(300)
-      .direction('reverse')
       .fromTo('opacity', '0', '100%');
+
   }
 
   onScroll(event: any) {
     const scrollTop: number = event.detail.scrollTop;
     const direction: AnimationDirection = scrollTop > 190 ? 'normal' : 'reverse';
-    if (this.animation.getDirection() !== direction) { this.animation.direction(direction).play(); }
+    if (this.animation.getDirection() !== direction) {
+      this.animation.direction(direction).play();
+      this.titleAnimation.direction(direction).play();
+    }
+
 
   }
 
@@ -75,6 +90,12 @@ export class MovieDetailsPage {
     forkJoin([movieDetails, movieAssociation]).subscribe(result => {
       this.movie = result[0];
       this.directors = this.movie.casts.crew.filter((x) => x.job === 'Director');
+      this.isWatched = result[1].isWatched;
+      this.watchedDate = result[1].datetime;
+      const imdbId = this.movie.imdb_id;
+      this.movieDServices.getOMDBMovieDetails(imdbId).subscribe(res => {
+        this.imdbRatings = res.Ratings;
+      })
     }, (error) => {
       this.presentToast(error.message);
       this.error = true;

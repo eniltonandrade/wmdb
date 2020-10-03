@@ -19,6 +19,12 @@ export class MovieDetailsService {
     );
   }
 
+  getOMDBMovieDetails(imdbId: string){
+    return this.http.get<any>(`${this.API_URL}imdb/ratings/${imdbId}`).pipe(
+      shareReplay()
+    );
+  }
+
   getAssociation(tmdbId: number){
     return this.http.get<any>(`${this.API_URL}users/movies/${tmdbId}`).pipe(
       shareReplay()
